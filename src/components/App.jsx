@@ -8,6 +8,11 @@ import InsulinCalculator from './InsulinCalculator';
 import PercentageChangeCalculator from './PercentageChangeCalculator';
 import QuantitySyncCalculator from './QuantitySyncCalculator';
 import UsefulWebsites from './UsefulWebsites';
+import MedicationEndDateCalculator from './MedicationEndDateCalculator';
+import NonHdlCholesterolCalculator from './NonHdlCholesterolCalculator';
+import MetricImperialConversion from './MetricImperialConversion';
+import TinzaparinDosingTool from './TinzaparinDosingTool';
+import OpioidConversionCalculator from './OpioidConversionCalculator';
 
 /* ====================================================
    Main App Component
@@ -25,13 +30,19 @@ function App() {
         <PercentageChangeCalculator />
         <InsulinCalculator />
         <FutureDateCalculator />
-        <BloodPressureCalculator />
+        <BloodPressureCalculator />        
+        <MedicationEndDateCalculator />
+        <NonHdlCholesterolCalculator/>
+        <MetricImperialConversion/>
+        <TinzaparinDosingTool/>
+        <OpioidConversionCalculator />
         <UsefulWebsites />
         
-        
+       
 
       </main>
-      <Footer />
+
+
     </div>
   );
 }

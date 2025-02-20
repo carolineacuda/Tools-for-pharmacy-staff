@@ -1,65 +1,94 @@
-import React, { useState, useEffect, useRef } from 'react';
-
-
-
+import React, { useState } from 'react';
 
 function DosageCalculator() {
-  // State for choosing calculation method: weight based or direct dose input
-  const [calculationMethod, setCalculationMethod] = useState('weight'); // 'weight' or 'direct'
-  // States for weight based inputs
+  // Calculation method: 'weight' (mg/kg * kg) or 'direct' (user enters total mg)
+  const [calculationMethod, setCalculationMethod] = useState('weight');
+
+  // Weight-based fields
   const [weight, setWeight] = useState('');
   const [mgPerKg, setMgPerKg] = useState('');
-  // State for direct dose input
-  const [totalDose, setTotalDose] = useState('');
-  // States for medication form and strength
-  const [medType, setMedType] = useState('tablet'); // 'tablet' or 'liquid'
-  const [strength, setStrength] = useState(''); // used for tablets (mg per tablet)
-  const [liquidConcentration, setLiquidConcentration] = useState(''); // used for liquids (mg/ml)
-  // Result message
-  const [result, setResult] = useState('');
 
-  const handleCalculate = () => {
-    let dose;
-    if (calculationMethod === 'weight') {
-      if (!weight || !mgPerKg) {
-        setResult("Please enter both weight and mg/kg dosage.");
-        return;
+  // Direct dose field
+  const [totalDose, setTotalDose] = useState('');
+
+  // Formulation choice: 'liquid' or 'tablet'
+  const [formulation, setFormulation] = useState('liquid');
+
+  // Liquid concentration fields (e.g., 300 mg / 5 ml)
+  const [liquidMg, setLiquidMg] = useState('');
+  const [liquidMl, setLiquidMl] = useState('');
+
+  // Tablet strength
+  const [tabletStrength, setTabletStrength] = useState('');
+
+  // Helper function to safely parse floats
+  const parseOrZero = (val) => {
+    const parsed = parseFloat(val);
+    return isNaN(parsed) ? 0 : parsed;
+  };
+
+  // 1. Compute the total daily dose (if possible)
+  let dailyDose = 0;
+  if (calculationMethod === 'weight') {
+    const w = parseOrZero(weight);
+    const mgk = parseOrZero(mgPerKg);
+    if (w > 0 && mgk > 0) {
+      dailyDose = w * mgk;
+    }
+  } else {
+    const td = parseOrZero(totalDose);
+    if (td > 0) {
+      dailyDose = td;
+    }
+  }
+
+  // 2. Partial Result: Show the daily dose if > 0
+  const dailyDoseMessage =
+    dailyDose > 0 ? `Total daily dose: ${dailyDose.toFixed(1)} mg` : '';
+
+  // 3. Final Result: If dailyDose > 0 and the formulation inputs are valid, compute final
+  let finalResult = '';
+  if (dailyDose > 0) {
+    if (formulation === 'liquid') {
+      const mgVal = parseOrZero(liquidMg);
+      const mlVal = parseOrZero(liquidMl);
+      if (mgVal > 0 && mlVal > 0) {
+        const mgPerMl = mgVal / mlVal;
+        const volumeNeeded = dailyDose / mgPerMl;
+        finalResult = `${volumeNeeded.toFixed(1)} ml (${dailyDose.toFixed(1)} mg total) of ` +
+                      `${mgVal} mg/${mlVal} ml solution`;
       }
-      dose = parseFloat(weight) * parseFloat(mgPerKg);
     } else {
-      if (!totalDose) {
-        setResult("Please enter the total daily mg dose.");
-        return;
+      const strength = parseOrZero(tabletStrength);
+      if (strength > 0) {
+        const numTablets = dailyDose / strength;
+        finalResult = `${numTablets.toFixed(1)} tablets (${dailyDose.toFixed(1)} mg total)`;
       }
-      dose = parseFloat(totalDose);
     }
-    
-    // Calculate based on the medication type
-    if (medType === 'tablet') {
-      if (!strength) {
-        setResult("Please enter the tablet strength in mg.");
-        return;
-      }
-      const numTablets = dose / parseFloat(strength);
-      // Build a confirmation string showing the parameters
-      setResult(`${numTablets.toFixed(2)} tablets (${dose.toFixed(2)} mg total)`);
-    } else if (medType === 'liquid') {
-      if (!liquidConcentration) {
-        setResult("Please enter the liquid concentration in mg/ml.");
-        return;
-      }
-      const volume = dose / parseFloat(liquidConcentration);
-      setResult(`${volume.toFixed(2)} ml (${dose.toFixed(2)} mg total) of solution at ${liquidConcentration} mg/ml`);
-    }
+  }
+
+  // 4. Reset function to clear all fields
+  const handleReset = () => {
+    setCalculationMethod('weight');
+    setWeight('');
+    setMgPerKg('');
+    setTotalDose('');
+    setFormulation('liquid');
+    setLiquidMg('');
+    setLiquidMl('');
+    setTabletStrength('');
   };
 
   return (
     <div className="tool">
-      <h2>Weight Based Dosage Calculator</h2>
-      <div>
-        <label>
+      <h2>Dosage Calculator</h2>
+
+      {/* Calculation Method Selection */}
+      <div style={{ marginBottom: '1rem' }}>
+        <label style={{ marginRight: '1rem' }}>
           <input
             type="radio"
+            name="calcMethod"
             value="weight"
             checked={calculationMethod === 'weight'}
             onChange={() => setCalculationMethod('weight')}
@@ -69,6 +98,7 @@ function DosageCalculator() {
         <label>
           <input
             type="radio"
+            name="calcMethod"
             value="direct"
             checked={calculationMethod === 'direct'}
             onChange={() => setCalculationMethod('direct')}
@@ -76,82 +106,125 @@ function DosageCalculator() {
           Enter total daily mg dose directly
         </label>
       </div>
-      {calculationMethod === 'weight' ? (
-        <div className="input-group">
-          <label>
-            Weight (kg):
+
+      {/* Weight-based Inputs */}
+      {calculationMethod === 'weight' && (
+        <div style={{ marginBottom: '1rem' }}>
+          <label style={{ display: 'block', marginBottom: '0.5rem' }}>
+            Weight:
             <input
               type="number"
               value={weight}
-              onChange={e => setWeight(e.target.value)}
+              onChange={(e) => setWeight(e.target.value)}
+              style={{ width: '80px', marginLeft: '0.5rem' }}
             />
+            <span style={{ marginLeft: '0.5rem' }}>kg</span>
           </label>
-          <label>
-            Dosage (mg/kg):
+
+          <label style={{ display: 'block' }}>
+            Dosage:
             <input
               type="number"
               value={mgPerKg}
-              onChange={e => setMgPerKg(e.target.value)}
+              onChange={(e) => setMgPerKg(e.target.value)}
+              style={{ width: '80px', marginLeft: '0.5rem' }}
             />
+            <span style={{ marginLeft: '0.5rem' }}>mg/kg</span>
           </label>
         </div>
-      ) : (
-        <div className="input-group">
+      )}
+
+      {/* Direct Total Dose Input */}
+      {calculationMethod === 'direct' && (
+        <div style={{ marginBottom: '1rem' }}>
           <label>
-            Total Daily Dose (mg):
+            Total daily mg dose:
             <input
               type="number"
               value={totalDose}
-              onChange={e => setTotalDose(e.target.value)}
+              onChange={(e) => setTotalDose(e.target.value)}
+              style={{ width: '100px', marginLeft: '0.5rem' }}
             />
           </label>
         </div>
       )}
-      <div className="input-group">
-        <label>
+
+      {/* Show partial daily dose if valid */}
+      {dailyDoseMessage && (
+        <p style={{ color: 'blue', fontWeight: 'bold' }}>{dailyDoseMessage}</p>
+      )}
+
+      {/* Formulation Selection */}
+      <div style={{ marginBottom: '1rem' }}>
+        <p>Formulation:</p>
+        <label style={{ marginRight: '1rem' }}>
           <input
             type="radio"
-            value="tablet"
-            checked={medType === 'tablet'}
-            onChange={() => setMedType('tablet')}
-          />
-          Tablet/Capsule
-        </label>
-        <label>
-          <input
-            type="radio"
+            name="formulation"
             value="liquid"
-            checked={medType === 'liquid'}
-            onChange={() => setMedType('liquid')}
+            checked={formulation === 'liquid'}
+            onChange={() => setFormulation('liquid')}
           />
           Liquid
         </label>
+        <label>
+          <input
+            type="radio"
+            name="formulation"
+            value="tablet"
+            checked={formulation === 'tablet'}
+            onChange={() => setFormulation('tablet')}
+          />
+          Tablet / Capsule
+        </label>
       </div>
-      {medType === 'tablet' ? (
-        <div className="input-group">
+
+      {/* Liquid Fields */}
+      {formulation === 'liquid' && (
+        <div style={{ marginBottom: '1rem' }}>
           <label>
-            Tablet strength (mg per tablet):
+            Liquid concentration:
             <input
               type="number"
-              value={strength}
-              onChange={e => setStrength(e.target.value)}
+              value={liquidMg}
+              onChange={(e) => setLiquidMg(e.target.value)}
+              style={{ width: '80px', marginLeft: '0.5rem' }}
             />
-          </label>
-        </div>
-      ) : (
-        <div className="input-group">
-          <label>
-            Liquid concentration (mg/ml):
+            <span style={{ marginLeft: '0.5rem', marginRight: '0.5rem' }}>mg /</span>
             <input
               type="number"
-              value={liquidConcentration}
-              onChange={e => setLiquidConcentration(e.target.value)}
+              value={liquidMl}
+              onChange={(e) => setLiquidMl(e.target.value)}
+              style={{ width: '50px' }}
             />
+            <span style={{ marginLeft: '0.5rem' }}>ml</span>
           </label>
         </div>
       )}
-      <button onClick={handleCalculate}>Calculate Dosage</button>
-      {result && <p className="result">{result}</p>}
+
+      {/* Tablet Fields */}
+      {formulation === 'tablet' && (
+        <div style={{ marginBottom: '1rem' }}>
+          <label>
+            Tablet strength:
+            <input
+              type="number"
+              value={tabletStrength}
+              onChange={(e) => setTabletStrength(e.target.value)}
+              style={{ width: '80px', marginLeft: '0.5rem' }}
+            />
+            <span style={{ marginLeft: '0.5rem' }}>mg per tablet</span>
+          </label>
+        </div>
+      )}
+
+      {/* Show final result if enough info is provided */}
+      {finalResult && (
+        <p style={{ color: 'blue', fontWeight: 'bold' }}>{finalResult}</p>
+      )}
+
+      {/* Reset Button */}
+      <button onClick={handleReset}>Reset</button>
     </div>
   );
 }
