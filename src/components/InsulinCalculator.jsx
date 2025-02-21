@@ -60,7 +60,7 @@ function InsulinCalculator() {
       // totalUnits = totalUnitsPerDevice * quantityDevices
       const totalUnits = totalUnitsPerDevice * parsedQuantityDevices;
       const days = totalUnits / parsedDailyUnits;
-      result = `Total units: ${totalUnits.toFixed(0)}. This should last for approximately ${days.toFixed(
+      result = `Supply should last for approximately ${days.toFixed(
         1
       )} days.`;
     }
@@ -81,7 +81,7 @@ function InsulinCalculator() {
       const devicesNeeded = totalUnitsNeeded / totalUnitsPerDevice;
       result = `You need ${devicesNeeded.toFixed(1)} devices to cover ${parsedDays.toFixed(
         1
-      )} days. That's a total of ${totalUnitsNeeded.toFixed(0)} units.`;
+      )} days.`;
     }
   }
 
