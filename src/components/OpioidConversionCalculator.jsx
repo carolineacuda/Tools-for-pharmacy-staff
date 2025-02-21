@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import FeedbackLink from "./FeedbackLink.jsx";
 
 
 // Data from your provided table
@@ -230,6 +231,7 @@ const opioidData = [
   
         {/* Reset Button */}
         <button onClick={handleReset}>Reset</button>
+        <FeedbackLink toolName="Opioid Conversion Calculator Tool" emailAddress="caroline@toolsforpharmacists.com" />
       </div>
     );
   }

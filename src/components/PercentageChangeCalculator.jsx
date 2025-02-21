@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import FeedbackLink from "./FeedbackLink.jsx";
 
 function PercentageChangeCalculator() {
   const [previous, setPrevious] = useState('');
@@ -221,6 +222,7 @@ function PercentageChangeCalculator() {
           </div>
         )}
       </div>
+      <FeedbackLink toolName="Percentage Change Calculator Tool" emailAddress="caroline@toolsforpharmacists.com" />  
     </div>
   );
 }

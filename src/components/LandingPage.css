@@ -1,0 +1,65 @@
+/* Reset some default margins */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Sticky header at the top */
+  .sticky-header {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    color: #000; /* Force black text */
+    border-bottom: 1px solid #ddd;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+  }
+  
+  .sticky-header h1 {
+    margin: 0;
+    color: #000; /* Or any visible color */
+    font-family: Arial, sans-serif;
+  }
+  
+  .sticky-header select {
+    padding: 5px;
+    font-size: 1rem;
+  }
+  
+  /* Grid of cards */
+  .card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  /* Individual tool card */
+  .tool-card {
+    background: #f8f8f8;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .tool-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+    footer {
+    position: relative;
+    text-align: center;
+    bottom: 0;
+    width: 100%;
+    height: 2.5rem;
+  }
+  
+  footer p {
+    color: #ccc;
+  }

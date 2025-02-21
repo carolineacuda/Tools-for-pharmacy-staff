@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import FeedbackLink from "./FeedbackLink.jsx";
 
 function QuantitySyncCalculator() {
   // State for how many medicines and how many days
@@ -157,6 +158,7 @@ function QuantitySyncCalculator() {
           <button onClick={handleReset}>Reset</button>
         </div>
       )}
+    <FeedbackLink toolName="Quantity Sync Calculator" emailAddress="caroline@toolsforpharmacists.com" />   
     </div>
   );
 }

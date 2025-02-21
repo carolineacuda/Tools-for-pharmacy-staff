@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import FeedbackLink from "./FeedbackLink.jsx";
 
 function NonHdlCholesterolCalculator() {
   // Radio button for calculation mode: "target" (40% reduction goal) or "actual" (compare pre & latest)
@@ -194,6 +195,7 @@ function NonHdlCholesterolCalculator() {
 
       {/* Reset button */}
       <button onClick={handleReset}>Reset</button>
+      <FeedbackLink toolName="Non hdl Cholesterol Calculator Tool" emailAddress="caroline@toolsforpharmacists.com" />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import FeedbackLink from "./FeedbackLink.jsx";
 
 function MetricImperialConversion() {
   // Radio button to toggle between Weight and Height
@@ -250,6 +251,7 @@ function MetricImperialConversion() {
 
       {/* Reset button */}
       <button onClick={handleReset}>Reset</button>
+      <FeedbackLink toolName="Metric Imperial Conversion Tool" emailAddress="caroline@toolsforpharmacists.com" />
     </div>
   );
 }

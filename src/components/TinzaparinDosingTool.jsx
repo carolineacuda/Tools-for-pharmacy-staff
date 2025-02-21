@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import FeedbackLink from "./FeedbackLink.jsx";
 
 function TinzaparinDosingTool() {
  // TODO: Implement Tinzaparin dosing tool logic here 
@@ -118,6 +119,7 @@ function TinzaparinDosingTool() {
      )}
      {/* Reset Button */}
      <button onClick={handleReset}>Reset</button>
+     <FeedbackLink toolName="Tinzaparin Dosing Tool" emailAddress="caroline@toolsforpharmacists.com" />  
    </div>
  );
  

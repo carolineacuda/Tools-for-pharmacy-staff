@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import FeedbackLink from "./FeedbackLink.jsx";
 
 /* ====================================================
    Useful Websites Component
@@ -176,6 +177,7 @@ function UsefulWebsites() {
             </li>
           ))}
         </ul>
+        <FeedbackLink toolName="Useful Websites Tool" emailAddress="caroline@toolsforpharmacists.com" />
       </div>
     );
   }

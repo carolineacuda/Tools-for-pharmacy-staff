@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import FeedbackLink from "./FeedbackLink.jsx";
 
 /* ====================================================
    Future Date Calculator Component
@@ -94,6 +95,7 @@ function FutureDateCalculator() {
 
       {/* Reset button */}
       <button onClick={handleReset}>Reset</button>
+      <FeedbackLink toolName="Future Date Calculator Tool" emailAddress="caroline@toolsforpharmacists.com" />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import FeedbackLink from "./FeedbackLink.jsx";
 
 function DosageCalculator() {
   // Calculation method: 'weight' (mg/kg * kg) or 'direct' (user enters total mg)
@@ -225,6 +226,19 @@ function DosageCalculator() {
 
       {/* Reset Button */}
       <button onClick={handleReset}>Reset</button>
+
+      {/* Link to BNF for dosage guidance */}
+     <p style={{ marginTop: '1rem' }}>
+       <a
+         href="https://bnf.nice.org.uk/"
+         target="_blank"
+         rel="noopener noreferrer"
+         style={{ textDecoration: 'underline', color: 'blue' }}
+       >
+        British National Formulary (BNF)
+       </a>
+     </p>
+     <FeedbackLink toolName="Dosage Calculator Tool" emailAddress="caroline@toolsforpharmacists.com" />
     </div>
   );
 }

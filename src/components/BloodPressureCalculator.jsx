@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Chart } from 'chart.js/auto';
+import FeedbackLink from "./FeedbackLink.jsx";
 
 /* ====================================================
    Blood Pressure Average Calculator Component
@@ -173,6 +174,7 @@ function BloodPressureCalculator() {
       <div style={{ marginTop: '1rem' }}>
         <button onClick={handleReset}>Reset</button>
       </div>
+      <FeedbackLink toolName="Blood Pressure Calculator" emailAddress="caroline@toolsforpharmacists.com" />
     </div>
   );
 }

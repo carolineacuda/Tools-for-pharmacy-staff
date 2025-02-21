@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import FeedbackLink from "./FeedbackLink.jsx";
 
 function MedicationEndDateCalculator() {
   // Formulation: "solid" or "liquid"
@@ -161,6 +162,7 @@ function MedicationEndDateCalculator() {
 
       {/* Reset button */}
       <button onClick={handleReset}>Reset</button>
+      <FeedbackLink toolName="Medication End Date Calculator Tool" emailAddress="caroline@toolsforpharmacists.com" />
     </div>
   );
 }
