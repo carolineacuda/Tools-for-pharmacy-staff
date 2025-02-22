@@ -34,8 +34,11 @@
   }
   
   button {
-    padding: 8px 15px;
-    cursor: pointer;
+    /*padding: 8px 15px;
+    cursor: pointer;*/
+    /*mobile friendly changes:*/
+    padding: 10px 20px; /* Enough padding for touch */
+    font-size: 1rem; 
   }
   
   .result {

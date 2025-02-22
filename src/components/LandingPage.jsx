@@ -50,7 +50,7 @@ function LandingPage({ onSelectTool }) {
         ))}
       </main>
       <footer>
-        <p>This application is currently under development and testing -please use with caution. Contact: caroline@toolsforpharmacists.com </p>
+        <p>This application is currently under development and testing. Please use with caution. Contact: caroline@toolsforpharmacists.com </p>
       </footer>
     </div>
   );

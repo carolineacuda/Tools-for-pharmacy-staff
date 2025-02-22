@@ -2,6 +2,7 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
+    padding: 10px;
   }
   
   /* Sticky header at the top */
@@ -22,6 +23,15 @@ body {
     margin: 0;
     color: #000; /* Or any visible color */
     font-family: Arial, sans-serif;
+    /*additional changes*/
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
   }
   
   .sticky-header select {
@@ -40,11 +50,15 @@ body {
   /* Individual tool card */
   .tool-card {
     background: #f8f8f8;
-    padding: 20px;
+    /*padding: 20px;
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 8px;*/
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
   }
   
   .tool-card:hover {
@@ -61,5 +75,22 @@ body {
   }
   
   footer p {
-    color: #ccc;
+    color: #000000;
   }
+
+/* Example: Increase spacing and layout on tablets and up */
+@media (min-width: 600px) {
+  .tool {
+    padding: 20px;
+    margin-bottom: 30px;
+  }
+}
+
+/* Example: For desktop screens, you might want multi-column layouts */
+@media (min-width: 900px) {
+  .card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+}
