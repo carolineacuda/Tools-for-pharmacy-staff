@@ -126,7 +126,7 @@ function InsulinCalculator() {
       {/* Shared fields */}
       <div style={{ marginBottom: '1rem' }}>
         <label style={{ display: 'block', marginBottom: '0.5rem' }}>
-          Units per ml:
+          Units per ml in device:
         </label>
         <input
           type="number"

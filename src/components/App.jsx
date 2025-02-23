@@ -13,6 +13,7 @@ import MetricImperialConversion from './MetricImperialConversion';
 import TinzaparinDosingTool from './TinzaparinDosingTool';
 import OpioidConversionCalculator from './OpioidConversionCalculator';
 import OestrogelCalculator from './OestrogelCalculator';
+//import ScrollToTop from './ScrollToTop';
 
 /* ====================================================
    Main App Component
@@ -52,7 +53,7 @@ function App() {
           {selectedTool === 'opioidConversion' && <OpioidConversionCalculator />}
           {selectedTool === 'oestrogel' && <OestrogelCalculator />}
           {selectedTool === 'usefulWebsites' && <UsefulWebsites />}
-
+        <footer>This application is currently under development and testing. Please use with caution. Contact: caroline@toolsforpharmacists.com</footer>
         
          {/* ... add your other tools */}
          </div>

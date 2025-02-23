@@ -107,7 +107,7 @@ function OestrogelCalculator() {
       {/* Shared field: pump actuations per day */}
       <div style={{ marginBottom: '1rem' }}>
         <label style={{ display: 'block', marginBottom: '0.5rem' }}>
-          Pump actuations per day:
+          Pump actuations per day :
         </label>
         <input
           type="number"
@@ -155,6 +155,7 @@ function OestrogelCalculator() {
 
       {/* Reset button */}
       <button onClick={handleReset}>Reset</button>
+      <p style={{color: 'grey'}}>Calculations based on 80g pack size (Each pump actuation delivers 1.25 g of gel as stated in the Summary of Product Characteristics)</p>
     <FeedbackLink toolName="Oestrogel Calculator Tool" emailAddress="caroline@toolsforpharmacists.com" />
     </div>
   );

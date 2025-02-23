@@ -45,7 +45,7 @@ function DosageCalculator() {
 
   // 2. Partial Result: Show the daily dose if > 0
   const dailyDoseMessage =
-    dailyDose > 0 ? `Total daily dose: ${dailyDose.toFixed(1)} mg` : '';
+    dailyDose > 0 ? `Dose: ${dailyDose.toFixed(1)} mg` : '';
 
   // 3. Final Result: If dailyDose > 0 and the formulation inputs are valid, compute final
   let finalResult = '';
@@ -56,14 +56,14 @@ function DosageCalculator() {
       if (mgVal > 0 && mlVal > 0) {
         const mgPerMl = mgVal / mlVal;
         const volumeNeeded = dailyDose / mgPerMl;
-        finalResult = `${volumeNeeded.toFixed(1)} ml (${dailyDose.toFixed(1)} mg total) of ` +
+        finalResult = `${volumeNeeded.toFixed(1)} ml (${dailyDose.toFixed(1)} mg) of ` +
                       `${mgVal} mg/${mlVal} ml solution`;
       }
     } else {
       const strength = parseOrZero(tabletStrength);
       if (strength > 0) {
         const numTablets = dailyDose / strength;
-        finalResult = `${numTablets.toFixed(1)} tablets (${dailyDose.toFixed(1)} mg total)`;
+        finalResult = `${numTablets.toFixed(1)} tablets (${dailyDose.toFixed(1)} mg)`;
       }
     }
   }
@@ -83,6 +83,7 @@ function DosageCalculator() {
   return (
     <div className="tool">
       <h2>Dosage Calculator</h2>
+      <p style={{color: 'red'}}>This calculator is only suitable for double checking doses and should NOT be used as the primary means for determining the correct dose.</p>
 
       {/* Calculation Method Selection */}
       <div style={{ marginBottom: '1rem' }}>
@@ -104,7 +105,7 @@ function DosageCalculator() {
             checked={calculationMethod === 'direct'}
             onChange={() => setCalculationMethod('direct')}
           />
-          Enter total daily mg dose directly
+          Calculate from mg dose
         </label>
       </div>
 
@@ -228,16 +229,18 @@ function DosageCalculator() {
       <button onClick={handleReset}>Reset</button>
 
       {/* Link to BNF for dosage guidance */}
-     <p style={{ marginTop: '1rem' }}>
-       <a
-         href="https://bnf.nice.org.uk/"
-         target="_blank"
-         rel="noopener noreferrer"
-         style={{ textDecoration: 'underline', color: 'blue' }}
-       >
-        British National Formulary (BNF)
-       </a>
-     </p>
+      <p>
+          See&nbsp;
+            <a
+              href="https://bnf.nice.org.uk/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: 'underline', color: 'blue' }}
+            >
+              British National Formulary (BNF)
+            </a>
+            &nbsp;for recommended dosage.
+          </p>
      <FeedbackLink toolName="Dosage Calculator Tool" emailAddress="caroline@toolsforpharmacists.com" />
     </div>
   );

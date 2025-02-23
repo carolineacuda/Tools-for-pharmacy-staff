@@ -1,8 +1,40 @@
 import React, { useState } from 'react';
 import FeedbackLink from "./FeedbackLink.jsx";
 
+/*
+Calculations based on tables below. Data from (https://bnf.nice.org.uk/medicines-guidance/prescribing-in-palliative-care/)		
+Approximate equi-analgesic potencies of opioids for oral administration 		
+		
+Formulation	Drug	Approximate Equivalent dose to 10mg oral morphine
+Oral	Codeine phosphate	100mg
+Oral	Dihydrocodeine	100mg
+Oral	Hydromorphone	2mg
+Oral	Morphine	10mg
+Oral	Oxycodone	6.6mg
+Oral	Tapentadol	25mg
+Oral	Tramadol	100mg
+IV, Subcut	Diamorphine	3.3 mg
+IV, Subcut	Oxycodone	5 mg
+IV, Subcut	Morphine	5 mg
+		
+Conversion from oral to transdermal administration		
+Formulation	Drug	Approximate Equivalent dose to oral morphine
+transdermal patch	buprenorphine 5 micrograms/hour	12
+transdermal patch	buprenorphine 10 micrograms/hour	24
+transdermal patch	buprenorphine 15 micrograms/hour	36
+transdermal patch	buprenorphine 20 micrograms/hour	48
+transdermal patch	buprenorphine 35 micrograms/hour	84
+transdermal patch	buprenorphine 52.5 micrograms/hour	126
+transdermal patch	buprenorphine 70 micrograms/hour	168
+transdermal patch	fentanyl 12 micrograms/hour 	30
+transdermal patch	fentanyl 25 micrograms/hour	60
+transdermal patch	fentanyl 37.5 micrograms/hour	90
+transdermal patch	fentanyl 50 micrograms/hour	120
+transdermal patch	fentanyl 75 micrograms/hour	180
+transdermal patch	fentanyl 100 micrograms/hour	240
 
-// Data from your provided table
+*/
+
 // For non-patch opioids: "mgDrugPer10Morphine" = how many mg of this opioid ~ 10 mg oral morphine
 // For patches: "morphineEquivalent" = total daily mg oral morphine matched by 1 patch
 
@@ -39,6 +71,7 @@ const opioidData = [
   
   // Helper to compute morphine equivalent for a given opioid and daily dose.
   function getMorphineEquivalent(opioidId, dailyDose) {
+    
     const item = opioidData.find(o => o.id === opioidId);
     if (!item) return 0;
   
@@ -66,7 +99,7 @@ const opioidData = [
     // For non-patch opioids.
     const ratio = item.mgDrugPer10Morphine / 10;
     const drugDose = morphineMg * ratio;
-    return `${drugDose.toFixed(1)} mg/day of ${item.name} (approx)`;
+    return `${drugDose.toFixed(1)} mg of ${item.name} (approx)`;
   }
   
   function OpioidConversionCalculator() {
@@ -116,14 +149,17 @@ const opioidData = [
       setMorphineDaily('');
       setTargetOpioid('');
     };
+    
   
     return (
       <div className="tool">
         <h2>Opioid Conversion Calculator</h2>
+        <p style={{color: 'red'}}>This calculator is intended solely as a reference for verifying opiate conversion estimates and
+          should not be relied upon as the primary method for determining the correct dose.</p>
   
         {/* PART A: Total Daily Morphine-Equivalent Dose */}
         <h3>Total Daily Morphine-Equivalent Dose</h3>
-        <p>Enter each opioid the patient is taking, plus total daily dose:</p>
+        <p>Select an opioid and enter the dose:</p>
         {lines.map((line, index) => {
           const selectedOpioid = opioidData.find(od => od.id === line.opioidId);
           const dailyDosePlaceholder = selectedOpioid && selectedOpioid.route === 'patch'
@@ -182,9 +218,9 @@ const opioidData = [
   
         {/* PART B: Convert from Oral Morphine to Another Opioid */}
         <h3>Convert from Oral Morphine to Another Opioid</h3>
-        <p>Enter total daily oral morphine dose, then pick the target opioid:</p>
+        <p>Enter the total daily oral morphine dose, then pick the target opioid:</p>
         <div style={{ marginBottom: '0.5rem' }}>
-          <label style={{ marginRight: '0.5rem' }}>Oral Morphine mg/day:</label>
+          <label style={{ marginRight: '0.5rem' }}>Oral Morphine mg:</label>
           <input
             type="number"
             value={morphineDaily}
@@ -216,8 +252,18 @@ const opioidData = [
         {/* Notes Section */}
         <div style={{ fontSize: '0.85em', color: '#666', marginBottom: '1rem' }}>
           <p>
-            <strong>Notes:</strong> These conversions are approximate. Data is derived from opioid dose equivalent tables (as of Feb 2025) and the Faculty of Pain Medicine guidelines. Please refer to&nbsp;
-            <a
+            <strong>Notes:</strong>These conversions are approximate. Calculations are derived from the dose equivalence tables in the &nbsp;
+            <a 
+              href="https://bnf.nice.org.uk/medicines-guidance/prescribing-in-palliative-care/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: 'underline', color: 'blue' }}
+            >
+              Prescribing in Palliative Care
+            </a>
+            &nbsp;section of the British National Formulary (BNF), current as of February 2025.
+            For guidance on dose equivalents and opioid conversions, please refer to the  &nbsp;
+            <a 
               href="https://fpm.ac.uk/opioids-aware-structured-approach-opioid-prescribing/dose-equivalents-and-changing-opioids"
               target="_blank"
               rel="noopener noreferrer"
@@ -225,7 +271,7 @@ const opioidData = [
             >
               Faculty of Pain Medicine
             </a>
-            &nbsp;for additional guidance when switching opioids.
+            &nbsp;guidelines.
           </p>
         </div>
   

@@ -50,6 +50,7 @@ function TinzaparinDosingTool() {
  return (
    <div className="tool">
      <h2>Tinzaparin Treatment Dosing Tool</h2>
+     <p style={{color: 'red'}}>This calculator is only suitable for double checking doses and should NOT be used as the primary means for determining the correct dose.</p>
 
      {/* eGFR Category Radio Buttons */}
      <div style={{ marginBottom: '1rem' }}>
@@ -100,26 +101,27 @@ function TinzaparinDosingTool() {
    
 
      {/* Link to full guidance */}
-     <p style={{ marginTop: '1rem' }}>
-       <a
-         href="https://www.medicines.org.uk/emc/product/13835/smpc"
-         target="_blank"
-         rel="noopener noreferrer"
-         style={{ textDecoration: 'underline', color: 'blue' }}
-       >
-         Tinzaparin SPC
-       </a>
-     </p>
+     <div style={{ fontSize: '0.85em', color: '#666', marginBottom: '1rem' }}>
+     <p>
+     <strong>Notes:</strong> This calculation is based on the tinzaparin treatment dose for VTE (175unit/Kg) using 20,000 IU/ml pre-filled syringes (Feb 2025). 
+      Doses are administered in 1,000 IU increments facilitated by the 0.05 ml graduations on the syringes. As recommended in the tinzaparin Summary of Product 
+      Characteristics (SPC), the calculated dose is therefore rounded up or down as appropriate. See&nbsp;
+            <a 
+              href="https://www.medicines.org.uk/emc/product/13835/smpc"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: 'underline', color: 'blue' }}
+            >
+              Tinzaparin SPC
 
-     {/* Clarification Message */}
-     {clarificationMessage && (
-       <p style={{ marginTop: '1rem', color: 'gray' }}>
-         {clarificationMessage}
-       </p>
-     )}
+            </a>
+      </p>
+
+   
      {/* Reset Button */}
      <button onClick={handleReset}>Reset</button>
      <FeedbackLink toolName="Tinzaparin Dosing Tool" emailAddress="caroline@toolsforpharmacists.com" />  
+     </div>
    </div>
  );
  
