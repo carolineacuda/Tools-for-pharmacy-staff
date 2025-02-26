@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import FeedbackLink from "./FeedbackLink.jsx";
 
-function MetricImperialConversion() {
-  // Radio button to toggle between Weight and Height
+function MetricImperialConversionCalculator() {
+  // Toggle between Weight and Height modes.
   const [calcMode, setCalcMode] = useState('weight');
 
   // Weight states
@@ -15,7 +14,7 @@ function MetricImperialConversion() {
   const [feet, setFeet] = useState('');
   const [inches, setInches] = useState('');
 
-  // Helper: parse float or return null if invalid
+  // Helper: parse float or return null if invalid.
   const parseFloatOrNull = (val) => {
     const parsed = parseFloat(val);
     return isNaN(parsed) ? null : parsed;
@@ -25,21 +24,15 @@ function MetricImperialConversion() {
   // WEIGHT CONVERSION FUNCTIONS
   // ===========================
   const kgToStonePounds = (kgValue) => {
-    // 1 stone = 6.35029318 kg
-    // leftover in stone => convert to pounds (1 stone = 14 lb)
-    const totalStone = kgValue / 6.35029318; 
+    // 1 stone = 6.35029318 kg, 1 stone = 14 lb
+    const totalStone = kgValue / 6.35029318;
     const wholeStone = Math.floor(totalStone);
     const fractionStone = totalStone - wholeStone;
-    const lbs = fractionStone * 14; 
-    return {
-      stone: wholeStone,
-      pounds: lbs,
-    };
+    const lbs = fractionStone * 14;
+    return { stone: wholeStone, pounds: lbs };
   };
 
   const stonePoundsToKg = (st, lb) => {
-    // st in stone, lb in pounds
-    // 1 stone = 6.35029318 kg, 1 lb = 0.45359237 kg
     return st * 6.35029318 + lb * 0.45359237;
   };
 
@@ -47,21 +40,14 @@ function MetricImperialConversion() {
   // HEIGHT CONVERSION FUNCTIONS
   // ============================
   const cmToFeetInches = (cmValue) => {
-    // 1 inch = 2.54 cm
-    // 1 foot = 12 inches
+    // 1 inch = 2.54 cm, 1 foot = 12 inches
     const totalInches = cmValue / 2.54;
     const wholeFeet = Math.floor(totalInches / 12);
     const leftoverInches = totalInches - wholeFeet * 12;
-    return {
-      feet: wholeFeet,
-      inches: leftoverInches,
-    };
+    return { feet: wholeFeet, inches: leftoverInches };
   };
 
   const feetInchesToCm = (ft, inch) => {
-    // ft in feet, inch in inches
-    // totalInches = ft*12 + inch
-    // 1 inch = 2.54 cm
     const totalInches = ft * 12 + inch;
     return totalInches * 2.54;
   };
@@ -72,62 +58,44 @@ function MetricImperialConversion() {
   let resultMessage = '';
 
   if (calcMode === 'weight') {
-    // If the user entered a valid kg, convert to stone+pounds
+    // Check which field is filled:
     const parsedKg = parseFloatOrNull(kg);
     const parsedStone = parseFloatOrNull(stone);
     const parsedPounds = parseFloatOrNull(pounds);
 
     if (parsedKg !== null && parsedKg > 0) {
-      // Convert kg -> stone/pounds
+      // If kg is entered, ignore stone/pounds and output: "11 stone and 0.3 lb is equivalent to 70.0 kg"
       const { stone: st, pounds: lb } = kgToStonePounds(parsedKg);
-      // Example: "11 stone and 0.3 lb is equivalent to 70 kg"
-      resultMessage = `${st.toFixed(0)} stone and ${lb.toFixed(1)} lb (${parsedKg.toFixed(
-        1
-      )} kg)`;
+      resultMessage = `${st.toFixed(0)} stone and ${lb.toFixed(1)} lb is equivalent to ${parsedKg.toFixed(1)} kg`;
     } else if (
-      // Otherwise, if the user entered stone/pounds, convert to kg
       parsedStone !== null &&
-      parsedStone >= 0 &&
       parsedPounds !== null &&
-      parsedPounds >= 0 &&
       (parsedStone > 0 || parsedPounds > 0)
     ) {
+      // If stone/pounds are entered, ignore kg and output: "71.2 kg (11 stone and 3.0 lb)"
       const computedKg = stonePoundsToKg(parsedStone, parsedPounds);
-      // Example: "11 stone and 0.3 lb is equivalent to 70 kg"
-      resultMessage = `${parsedStone.toFixed(0)} stone and ${parsedPounds.toFixed(
-        1
-      )} lb (${computedKg.toFixed(1)} kg)`;
+      resultMessage = `${computedKg.toFixed(1)} kg is equivalent to ${parsedStone.toFixed(0)} stone and ${parsedPounds.toFixed(1)} lb`;
     }
   } else {
-    // calcMode === 'height'
+    // Height conversion.
     const parsedCm = parseFloatOrNull(cm);
     const parsedFeet = parseFloatOrNull(feet);
     const parsedInches = parseFloatOrNull(inches);
 
     if (parsedCm !== null && parsedCm > 0) {
-      // Convert cm -> feet/inches
       const { feet: ft, inches: inch } = cmToFeetInches(parsedCm);
-      // "5 feet and 7.9 inches is equivalent to 170 cm"
-      resultMessage = `${ft.toFixed(0)} feet and ${inch.toFixed(1)} inches (${parsedCm.toFixed(
-        1
-      )} cm)`;
+      resultMessage = `${ft.toFixed(0)} feet and ${inch.toFixed(1)} inches is equivalent to ${parsedCm.toFixed(1)} cm`;
     } else if (
       parsedFeet !== null &&
-      parsedFeet >= 0 &&
       parsedInches !== null &&
-      parsedInches >= 0 &&
       (parsedFeet > 0 || parsedInches > 0)
     ) {
       const computedCm = feetInchesToCm(parsedFeet, parsedInches);
-      resultMessage = `${parsedFeet.toFixed(0)} feet and ${parsedInches.toFixed(
-        1
-      )} inches (${computedCm.toFixed(1)} cm)`;
+      resultMessage = `${computedCm.toFixed(1)} cm is equivalent to ${parsedFeet.toFixed(0)}  feet and ${parsedInches.toFixed(1)} inches`;
     }
   }
 
-  // ============================
-  // RESET ALL FIELDS
-  // ============================
+  // Reset function to clear all inputs.
   const handleReset = () => {
     setCalcMode('weight');
     setKg('');
@@ -141,7 +109,6 @@ function MetricImperialConversion() {
   return (
     <div className="tool">
       <h2>Metric Imperial Conversion Calculator</h2>
-
       {/* Toggle between Weight and Height */}
       <div style={{ marginBottom: '1rem' }}>
         <label style={{ marginRight: '1rem' }}>
@@ -150,7 +117,10 @@ function MetricImperialConversion() {
             name="calcMode"
             value="weight"
             checked={calcMode === 'weight'}
-            onChange={() => setCalcMode('weight')}
+            onChange={() => {
+              handleReset();
+              setCalcMode('weight');
+            }}
           />
           Weight
         </label>
@@ -160,15 +130,18 @@ function MetricImperialConversion() {
             name="calcMode"
             value="height"
             checked={calcMode === 'height'}
-            onChange={() => setCalcMode('height')}
+            onChange={() => {
+              handleReset();
+              setCalcMode('height');
+            }}
           />
           Height
         </label>
       </div>
 
-      {/* Weight Fields */}
       {calcMode === 'weight' && (
         <div style={{ marginBottom: '1rem' }}>
+          {/* kg input */}
           <div style={{ marginBottom: '0.5rem' }}>
             <label style={{ display: 'block', marginBottom: '0.3rem' }}>
               Kilograms (kg)
@@ -176,11 +149,20 @@ function MetricImperialConversion() {
             <input
               type="number"
               value={kg}
-              onChange={(e) => setKg(e.target.value)}
+              onChange={(e) => {
+                setKg(e.target.value);
+                // Clear stone/pounds if kg is entered.
+                if (e.target.value !== "") {
+                  setStone("");
+                  setPounds("");
+                }
+              }}
               style={{ width: '100px' }}
               placeholder="e.g. 70"
+              disabled={stone !== "" || pounds !== ""}
             />
           </div>
+          {/* Stone / Pounds input */}
           <div>
             <label style={{ display: 'block', marginBottom: '0.3rem' }}>
               Stone / Pounds
@@ -189,25 +171,39 @@ function MetricImperialConversion() {
               <input
                 type="number"
                 value={stone}
-                onChange={(e) => setStone(e.target.value)}
+                onChange={(e) => {
+                  setStone(e.target.value);
+                  // Clear kg if stone is entered.
+                  if (e.target.value !== "") {
+                    setKg("");
+                  }
+                }}
                 style={{ width: '60px' }}
                 placeholder="st"
+                disabled={kg !== ""}
               />
               <input
                 type="number"
                 value={pounds}
-                onChange={(e) => setPounds(e.target.value)}
+                onChange={(e) => {
+                  setPounds(e.target.value);
+                  // Clear kg if pounds is entered.
+                  if (e.target.value !== "") {
+                    setKg("");
+                  }
+                }}
                 style={{ width: '60px' }}
                 placeholder="lb"
+                disabled={kg !== ""}
               />
             </div>
           </div>
         </div>
       )}
 
-      {/* Height Fields */}
       {calcMode === 'height' && (
         <div style={{ marginBottom: '1rem' }}>
+          {/* cm input */}
           <div style={{ marginBottom: '0.5rem' }}>
             <label style={{ display: 'block', marginBottom: '0.3rem' }}>
               Centimeters (cm)
@@ -215,11 +211,20 @@ function MetricImperialConversion() {
             <input
               type="number"
               value={cm}
-              onChange={(e) => setCm(e.target.value)}
+              onChange={(e) => {
+                setCm(e.target.value);
+                // Clear feet/inches if cm is entered.
+                if (e.target.value !== "") {
+                  setFeet("");
+                  setInches("");
+                }
+              }}
               style={{ width: '100px' }}
               placeholder="e.g. 170"
+              disabled={feet !== "" || inches !== ""}
             />
           </div>
+          {/* Feet / Inches input */}
           <div>
             <label style={{ display: 'block', marginBottom: '0.3rem' }}>
               Feet / Inches
@@ -228,32 +233,41 @@ function MetricImperialConversion() {
               <input
                 type="number"
                 value={feet}
-                onChange={(e) => setFeet(e.target.value)}
+                onChange={(e) => {
+                  setFeet(e.target.value);
+                  if (e.target.value !== "") {
+                    setCm("");
+                  }
+                }}
                 style={{ width: '60px' }}
                 placeholder="ft"
+                disabled={cm !== ""}
               />
               <input
                 type="number"
                 value={inches}
-                onChange={(e) => setInches(e.target.value)}
+                onChange={(e) => {
+                  setInches(e.target.value);
+                  if (e.target.value !== "") {
+                    setCm("");
+                  }
+                }}
                 style={{ width: '60px' }}
                 placeholder="in"
+                disabled={cm !== ""}
               />
             </div>
           </div>
         </div>
       )}
 
-      {/* Dynamic output in blue */}
       {resultMessage && (
         <p style={{ color: 'blue', fontWeight: 'bold' }}>{resultMessage}</p>
       )}
 
-      {/* Reset button */}
       <button onClick={handleReset}>Reset</button>
-      <FeedbackLink toolName="Metric Imperial Conversion Tool" emailAddress="caroline@toolsforpharmacists.com" />
     </div>
   );
 }
 
-export default MetricImperialConversion;
+export default MetricImperialConversionCalculator;

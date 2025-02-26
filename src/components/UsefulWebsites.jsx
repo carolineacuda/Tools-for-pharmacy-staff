@@ -143,7 +143,18 @@ function UsefulWebsites() {
       title: "Steroid Conversion Calculator - MDCalc",
       description: "Converts steroid dosages using dosing equivalencies.",
       url: "https://www.mdcalc.com/steroid-conversion-calculator"
-    }
+    },
+    {
+      title: "Complete IDDSI Framework ",
+      description: "Dysphagia and drink thickness.",
+      url: "https://www.iddsi.org/images/Publications-Resources/DetailedDefnTestMethods/English/V2DetailedDefnEnglish31july2019.pdf"
+    },
+    {
+    title: " PrescQIPP Over the counter items - GP guide to self care",
+    description: "Provides guidance on selft care and OTC medication.",
+    url: "https://www.prescqipp.info/media/ajsgw3bs/320-over-the-counter-items-2-0.pdff"
+  }
+    
   ];
   
     const [searchTerm, setSearchTerm] = useState('');

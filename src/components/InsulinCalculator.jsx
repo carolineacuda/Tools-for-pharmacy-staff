@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import FeedbackLink from "./FeedbackLink.jsx";
 
 /* ====================================================
@@ -7,8 +7,9 @@ import FeedbackLink from "./FeedbackLink.jsx";
    This component computes how many days a patient’s insulin supply should last.
    It calculates total units (units/ml * ml per device * number of devices)
    and then divides by the daily usage.
+   An optional section allows the user to specify the prescription date,
+   so that the tool can calculate when the medication should run out.
 */
-
 
 function InsulinCalculator() {
   // Mode: "duration" (how many days) or "quantity" (how many devices)
@@ -25,6 +26,10 @@ function InsulinCalculator() {
   // "quantity" mode uses days
   const [days, setDays] = useState('');
 
+  // Optional prescription date section (only applicable for duration mode)
+  const [usePrescriptionDate, setUsePrescriptionDate] = useState(false);
+  const [prescriptionDate, setPrescriptionDate] = useState('');
+
   // Helper: parse float or return null
   const parseFloatOrNull = (val) => {
     const parsed = parseFloat(val);
@@ -33,6 +38,9 @@ function InsulinCalculator() {
 
   // Compute result
   let result = '';
+  // We'll also keep a variable for supply duration (in days) if computed.
+  let supplyDays = null;
+  
   const parsedUnitsPerMl = parseFloatOrNull(unitsPerMl);
   const parsedMlPerDevice = parseFloatOrNull(mlPerDevice);
   const parsedDailyUnits = parseFloatOrNull(dailyUnits);
@@ -59,10 +67,8 @@ function InsulinCalculator() {
     ) {
       // totalUnits = totalUnitsPerDevice * quantityDevices
       const totalUnits = totalUnitsPerDevice * parsedQuantityDevices;
-      const days = totalUnits / parsedDailyUnits;
-      result = `Supply should last for approximately ${days.toFixed(
-        1
-      )} days.`;
+      supplyDays = totalUnits / parsedDailyUnits;
+      result = `Supply should last for approximately ${supplyDays.toFixed(1)} days.`;
     }
   } else {
     // mode === 'quantity': Calculate how many devices to supply for X days
@@ -79,10 +85,17 @@ function InsulinCalculator() {
       const totalUnitsNeeded = parsedDailyUnits * parsedDays;
       // devicesNeeded = totalUnitsNeeded / totalUnitsPerDevice
       const devicesNeeded = totalUnitsNeeded / totalUnitsPerDevice;
-      result = `You need ${devicesNeeded.toFixed(1)} devices to cover ${parsedDays.toFixed(
-        1
-      )} days.`;
+      result = `You need ${devicesNeeded.toFixed(1)} devices to cover ${parsedDays.toFixed(1)} days.`;
     }
+  }
+
+  // Calculate run-out date if the optional prescription date is provided (only for duration mode)
+  let runOutDateMessage = "";
+  if (mode === 'duration' && usePrescriptionDate && prescriptionDate && supplyDays !== null) {
+    const prescDate = new Date(prescriptionDate);
+    // Add the supply days (rounded down) to the prescription date.
+    prescDate.setDate(prescDate.getDate() + Math.floor(supplyDays));
+    runOutDateMessage = `Based on the prescription date, the medication should run out on ${prescDate.toLocaleDateString()}.`;
   }
 
   // Reset function
@@ -93,6 +106,8 @@ function InsulinCalculator() {
     setDailyUnits('');
     setQuantityDevices('');
     setDays('');
+    setUsePrescriptionDate(false);
+    setPrescriptionDate('');
   };
 
   return (
@@ -107,7 +122,10 @@ function InsulinCalculator() {
             name="mode"
             value="duration"
             checked={mode === 'duration'}
-            onChange={() => setMode('duration')}
+            onChange={() => {
+              handleReset();
+              setMode('duration');
+            }}
           />
           How many days will the supply last?
         </label>
@@ -117,7 +135,10 @@ function InsulinCalculator() {
             name="mode"
             value="quantity"
             checked={mode === 'quantity'}
-            onChange={() => setMode('quantity')}
+            onChange={() => {
+              handleReset();
+              setMode('quantity');
+            }}
           />
           How many devices for X days?
         </label>
@@ -132,18 +153,20 @@ function InsulinCalculator() {
           type="number"
           value={unitsPerMl}
           onChange={(e) => setUnitsPerMl(e.target.value)}
+          placeholder="e.g. 100"
           style={{ width: '100px' }}
         />
       </div>
 
       <div style={{ marginBottom: '1rem' }}>
         <label style={{ display: 'block', marginBottom: '0.5rem' }}>
-          ml per device:
+          Volume of insulin in device (ml)
         </label>
         <input
           type="number"
           value={mlPerDevice}
           onChange={(e) => setMlPerDevice(e.target.value)}
+          placeholder="e.g. 3"
           style={{ width: '100px' }}
         />
       </div>
@@ -196,12 +219,42 @@ function InsulinCalculator() {
         </p>
       )}
 
+      {/* Optional Prescription Date Section (only for duration mode) */}
+      {mode === 'duration' && (
+        <div style={{ marginTop: '1rem' }}>
+          <label>
+            <input
+              type="checkbox"
+              checked={usePrescriptionDate}
+              onChange={(e) => setUsePrescriptionDate(e.target.checked)}
+            />
+            &nbsp;Select here if you want to specify a prescription issue date to work out when the supply should run out.
+          </label>
+          {usePrescriptionDate && (
+            <div style={{ marginTop: '0.5rem', marginBottom: '1rem' }}>
+              <label>
+                Prescription Date:&nbsp;
+                <input
+                  type="date"
+                  value={prescriptionDate}
+                  onChange={(e) => setPrescriptionDate(e.target.value)}
+                />
+              </label>
+            </div>
+          )}
+          {runOutDateMessage && (
+            <p style={{ color: 'blue', fontWeight: 'bold' }}>
+              {runOutDateMessage}
+            </p>
+          )}
+        </div>
+      )}
+
       {/* Reset button */}
       <button onClick={handleReset}>Reset</button>
       <FeedbackLink toolName="Insulin Calculator Tool" emailAddress="caroline@toolsforpharmacists.com" />
     </div>
   );
 }
-
 
 export default InsulinCalculator;

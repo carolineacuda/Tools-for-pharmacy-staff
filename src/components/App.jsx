@@ -13,6 +13,8 @@ import MetricImperialConversion from './MetricImperialConversion';
 import TinzaparinDosingTool from './TinzaparinDosingTool';
 import OpioidConversionCalculator from './OpioidConversionCalculator';
 import OestrogelCalculator from './OestrogelCalculator';
+import HRTProgestogenDoseSelector from './HRTProgestogenDoseSelector';
+import EyeDropDurationCalculator from './EyeDropDurationCalculator';
 //import ScrollToTop from './ScrollToTop';
 
 /* ====================================================
@@ -52,6 +54,8 @@ function App() {
           {selectedTool === 'tinzaparin' && <TinzaparinDosingTool />}
           {selectedTool === 'opioidConversion' && <OpioidConversionCalculator />}
           {selectedTool === 'oestrogel' && <OestrogelCalculator />}
+          {selectedTool === 'HRTProgestogen' && <HRTProgestogenDoseSelector />}
+          {selectedTool === 'EyeDropDuration' && <EyeDropDurationCalculator />}
           {selectedTool === 'usefulWebsites' && <UsefulWebsites />}
         <footer>This application is currently under development and testing. Please use with caution. Contact: caroline@toolsforpharmacists.com</footer>
         

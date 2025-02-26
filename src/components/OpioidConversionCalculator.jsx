@@ -252,16 +252,8 @@ const opioidData = [
         {/* Notes Section */}
         <div style={{ fontSize: '0.85em', color: '#666', marginBottom: '1rem' }}>
           <p>
-            <strong>Notes:</strong>These conversions are approximate. Calculations are derived from the dose equivalence tables in the &nbsp;
-            <a 
-              href="https://bnf.nice.org.uk/medicines-guidance/prescribing-in-palliative-care/"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ textDecoration: 'underline', color: 'blue' }}
-            >
-              Prescribing in Palliative Care
-            </a>
-            &nbsp;section of the British National Formulary (BNF), current as of February 2025.
+            <strong>Notes:</strong>These conversions are approximate. Calculations are derived from the dose equivalence tables in the Prescribing in Palliative Care
+            section of the British National Formulary (BNF 88 Sept 2024-March 2025).
             For guidance on dose equivalents and opioid conversions, please refer to the  &nbsp;
             <a 
               href="https://fpm.ac.uk/opioids-aware-structured-approach-opioid-prescribing/dose-equivalents-and-changing-opioids"

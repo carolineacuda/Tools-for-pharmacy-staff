@@ -13,6 +13,10 @@ function OestrogelCalculator() {
   // "quantity" mode uses daysNeeded
   const [daysNeeded, setDaysNeeded] = useState('');
 
+  // Optional prescription date section (only for duration mode)
+  const [usePrescriptionDate, setUsePrescriptionDate] = useState(false);
+  const [prescriptionDate, setPrescriptionDate] = useState("");
+
   // Helper to parse float or return null
   const parseFloatOrNull = (val) => {
     const parsed = parseFloat(val);
@@ -23,6 +27,7 @@ function OestrogelCalculator() {
   // Each pump actuation = 1.25 g
 
   let result = '';
+  let supplyDays = null; // Will hold the calculated supply duration (in days)
 
   const parsedPumpDaily = parseFloatOrNull(pumpDaily);
 
@@ -39,13 +44,8 @@ function OestrogelCalculator() {
       const totalGel = 80 * parsedDevices;
       // dailyUsage = 1.25 g * pumpDaily
       const dailyUsage = 1.25 * parsedPumpDaily;
-      // days = totalGel / dailyUsage
-      const days = totalGel / dailyUsage;
-      result = `At ${parsedPumpDaily.toFixed(
-        1
-      )} pumps per day, this supply should last approximately ${days.toFixed(
-        1
-      )} days.`;
+      supplyDays = totalGel / dailyUsage;
+      result = `At ${parsedPumpDaily.toFixed(1)} pumps per day, this supply should last approximately ${supplyDays.toFixed(1)} days.`;
     }
   } else {
     // mode === 'quantity': How many devices to last X days?
@@ -62,10 +62,16 @@ function OestrogelCalculator() {
       const totalGelNeeded = dailyUsage * parsedDaysNeeded;
       // devicesNeeded = totalGelNeeded / 80
       const devicesNeeded = totalGelNeeded / 80;
-      result = `You need ${devicesNeeded.toFixed(1)} devices to cover ${parsedDaysNeeded.toFixed(
-        1
-      )} days at ${parsedPumpDaily.toFixed(1)} pumps per day.`;
+      result = `You need ${devicesNeeded.toFixed(1)} devices to cover ${parsedDaysNeeded.toFixed(1)} days at ${parsedPumpDaily.toFixed(1)} pumps per day.`;
     }
+  }
+
+  // Calculate run-out date if the optional prescription date is provided (only for duration mode)
+  let runOutDateMessage = "";
+  if (mode === 'duration' && usePrescriptionDate && prescriptionDate && supplyDays !== null) {
+    const prescDate = new Date(prescriptionDate);
+    prescDate.setDate(prescDate.getDate() + Math.floor(supplyDays));
+    runOutDateMessage = `Based on the prescription date, the medication should run out on ${prescDate.toLocaleDateString()}.`;
   }
 
   // Reset function
@@ -74,6 +80,8 @@ function OestrogelCalculator() {
     setPumpDaily('');
     setDeviceSupplied('');
     setDaysNeeded('');
+    setUsePrescriptionDate(false);
+    setPrescriptionDate("");
   };
 
   return (
@@ -88,7 +96,10 @@ function OestrogelCalculator() {
             name="mode"
             value="duration"
             checked={mode === 'duration'}
-            onChange={() => setMode('duration')}
+            onChange={() => {
+              handleReset();
+              setMode('duration');
+            }}
           />
           How many days will my supply last?
         </label>
@@ -98,7 +109,10 @@ function OestrogelCalculator() {
             name="mode"
             value="quantity"
             checked={mode === 'quantity'}
-            onChange={() => setMode('quantity')}
+            onChange={() => {
+              handleReset();
+              setMode('quantity');
+            }}
           />
           How many devices for X days?
         </label>
@@ -107,7 +121,7 @@ function OestrogelCalculator() {
       {/* Shared field: pump actuations per day */}
       <div style={{ marginBottom: '1rem' }}>
         <label style={{ display: 'block', marginBottom: '0.5rem' }}>
-          Pump actuations per day :
+          Pump actuations per day:
         </label>
         <input
           type="number"
@@ -146,17 +160,50 @@ function OestrogelCalculator() {
         </div>
       )}
 
-      {/* Dynamic result */}
+      {/* Display dynamic result */}
       {result && (
         <p style={{ color: 'blue', fontWeight: 'bold' }}>
           {result}
         </p>
       )}
 
+      {/* Optional Prescription Date Section (only in duration mode) */}
+      {mode === 'duration' && supplyDays !== null && (
+        <div style={{ marginTop: '1rem' }}>
+          <label>
+            <input
+              type="checkbox"
+              checked={usePrescriptionDate}
+              onChange={(e) => setUsePrescriptionDate(e.target.checked)}
+            />
+            &nbsp;Select here if you want to specify a prescription issue date to work out when the supply should run out.
+          </label>
+          {usePrescriptionDate && (
+            <div style={{ marginTop: '0.5rem', marginBottom: '1rem' }}>
+              <label>
+                Prescription Date:&nbsp;
+                <input
+                  type="date"
+                  value={prescriptionDate}
+                  onChange={(e) => setPrescriptionDate(e.target.value)}
+                />
+              </label>
+            </div>
+          )}
+          {usePrescriptionDate && prescriptionDate && runOutDateMessage && (
+            <p style={{ color: 'blue', fontWeight: 'bold' }}>
+              {runOutDateMessage}
+            </p>
+          )}
+        </div>
+      )}
+
       {/* Reset button */}
       <button onClick={handleReset}>Reset</button>
-      <p style={{color: 'grey'}}>Calculations based on 80g pack size (Each pump actuation delivers 1.25 g of gel as stated in the Summary of Product Characteristics)</p>
-    <FeedbackLink toolName="Oestrogel Calculator Tool" emailAddress="caroline@toolsforpharmacists.com" />
+      <p style={{ color: 'grey' }}>
+        Calculations based on an 80g pack size (Each pump actuation delivers 1.25 g of gel)
+      </p>
+      <FeedbackLink toolName="Oestrogel Calculator Tool" emailAddress="caroline@toolsforpharmacists.com" />
     </div>
   );
 }
