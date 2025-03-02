@@ -2,80 +2,72 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Chart } from 'chart.js/auto';
 import FeedbackLink from "./FeedbackLink.jsx";
 
-/* ====================================================
-   Blood Pressure Average Calculator Component
-   ==================================================== 
-   This component allows the user to add multiple blood pressure readings.
-   It computes the average systolic and diastolic values and displays the count.
-   A line chart (using Chart.js) is drawn to show trends in both values.
-   The input fields also listen for the Enter key so that users can add a reading
-   without having to click the button.
-*/
-
-// BloodPressureCalculator.jsx
-
 function BloodPressureCalculator() {
-  // State: an array of reading objects { systolic, diastolic }
-  // Start with one empty row.
+  // Each element in 'readings' is an object { systolic: '', diastolic: '' }
+  // Start with one empty row
   const [readings, setReadings] = useState([{ systolic: '', diastolic: '' }]);
-  
-  // Refs to hold the canvas and the Chart.js instance
   const canvasRef = useRef(null);
   const chartRef = useRef(null);
 
-  // Handler to update a row's field.
-  // If the last row becomes complete, add a new empty row.
-  const handleReadingChange = (index, field, value) => {
-    const updatedReadings = [...readings];
-    updatedReadings[index][field] = value;
-    setReadings(updatedReadings);
+  // Handle input change for each row. If the user just filled in the last row, add a new row
+  const handleLineChange = (index, field, value) => {
+    const updated = [...readings];
+    updated[index][field] = value;
+    setReadings(updated);
 
-    // Check if this is the last row and if both fields are now filled.
-    const currentRow = updatedReadings[index];
-    if (
-      index === updatedReadings.length - 1 &&
-      currentRow.systolic.trim() !== '' &&
-      currentRow.diastolic.trim() !== ''
-    ) {
-      setReadings([...updatedReadings, { systolic: '', diastolic: '' }]);
+    // If this is the last row and it's now complete, add a new empty row
+    const lastRow = index === updated.length - 1;
+    if (lastRow && updated[index].systolic && updated[index].diastolic) {
+      setReadings([...updated, { systolic: '', diastolic: '' }]);
     }
   };
 
-  // Filter out valid readings (rows with both systolic and diastolic entered)
+  // Filter out fully valid readings (both systolic and diastolic entered)
   const validReadings = readings.filter(
     (r) => r.systolic.trim() !== '' && r.diastolic.trim() !== ''
   );
 
-  // Compute averages (rounded to whole numbers)
-  const numValid = validReadings.length;
+  const totalReadings = validReadings.length;
+
+  // Compute averages (rounded to whole numbers) if we have valid readings
   const avgSystolic =
-    numValid > 0
+    totalReadings > 0
       ? Math.round(
           validReadings.reduce((sum, r) => sum + parseFloat(r.systolic), 0) /
-            numValid
-        )
-      : 0;
-  const avgDiastolic =
-    numValid > 0
-      ? Math.round(
-          validReadings.reduce((sum, r) => sum + parseFloat(r.diastolic), 0) /
-            numValid
+            totalReadings
         )
       : 0;
 
-  // Update (or re-create) the chart whenever validReadings change.
+  const avgDiastolic =
+    totalReadings > 0
+      ? Math.round(
+          validReadings.reduce((sum, r) => sum + parseFloat(r.diastolic), 0) /
+            totalReadings
+        )
+      : 0;
+
+  // Update the Chart.js chart whenever valid readings change
   useEffect(() => {
     if (!canvasRef.current) return;
-    // Destroy the old chart instance if it exists.
+
+    // Destroy old chart if it exists
     if (chartRef.current) {
       chartRef.current.destroy();
     }
-    // Use only valid readings for the chart.
-    const labels = validReadings.map((_, idx) => idx + 1);
+
+    // If no valid readings, clear canvas and return
+    if (validReadings.length === 0) {
+      const ctx = canvasRef.current.getContext('2d');
+      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+      return;
+    }
+
+    const ctx = canvasRef.current.getContext('2d');
+    const labels = validReadings.map((_, i) => i + 1);
     const systolicData = validReadings.map((r) => parseFloat(r.systolic));
     const diastolicData = validReadings.map((r) => parseFloat(r.diastolic));
 
-    chartRef.current = new Chart(canvasRef.current, {
+    chartRef.current = new Chart(ctx, {
       type: 'line',
       data: {
         labels,
@@ -101,7 +93,23 @@ function BloodPressureCalculator() {
     });
   }, [validReadings]);
 
-  // Reset everything to the initial state.
+  // Copy the average, number of readings, and list of readings to clipboard
+  const handleCopyReadings = () => {
+    if (totalReadings === 0) {
+      alert("No completed readings to copy.");
+      return;
+    }
+    const readingStrings = validReadings.map(
+      (r) => `${parseFloat(r.systolic)}/${parseFloat(r.diastolic)}`
+    );
+    const copyText = `Average blood pressure is ${avgSystolic}/${avgDiastolic} from ${totalReadings} blood pressure readings. Readings were: ${readingStrings.join('; ')}.`;
+    navigator.clipboard
+      .writeText(copyText)
+      .then(() => alert("Readings copied to clipboard!"))
+      .catch((err) => console.error("Failed to copy readings:", err));
+  };
+
+  // Reset the entire calculator
   const handleReset = () => {
     setReadings([{ systolic: '', diastolic: '' }]);
     if (chartRef.current) {
@@ -113,26 +121,19 @@ function BloodPressureCalculator() {
   return (
     <div className="tool">
       <h2>Home Blood Pressure Average Calculator</h2>
-      
-      {/* Dynamic Input Rows */}
+
+      {/* Dynamic input rows */}
       {readings.map((reading, index) => (
-        <div
-          key={index}
-          style={{
-            marginBottom: '0.5rem',
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
+        <div key={index} style={{ marginBottom: '0.5rem' }}>
           <label style={{ marginRight: '0.5rem' }}>
             Systolic:
             <input
               type="number"
               value={reading.systolic}
               onChange={(e) =>
-                handleReadingChange(index, 'systolic', e.target.value)
+                handleLineChange(index, 'systolic', e.target.value)
               }
-              style={{ marginLeft: '0.3rem', width: '70px' }}
+              style={{ width: '70px', marginLeft: '0.3rem' }}
             />
           </label>
           <label>
@@ -141,40 +142,42 @@ function BloodPressureCalculator() {
               type="number"
               value={reading.diastolic}
               onChange={(e) =>
-                handleReadingChange(index, 'diastolic', e.target.value)
+                handleLineChange(index, 'diastolic', e.target.value)
               }
-              style={{ marginLeft: '0.3rem', width: '70px' }}
+              style={{ width: '70px', marginLeft: '0.3rem' }}
             />
           </label>
         </div>
       ))}
 
-      {/* Display output (if there is at least one valid reading) */}
-      {numValid > 0 && (
-        <div style={{ color: 'blue', fontWeight: 'bold', marginTop: '1rem' }}>
-          <p>Number of readings: {numValid}</p>
-          <p>Average Systolic: {avgSystolic}</p>
-          <p>Average Diastolic: {avgDiastolic}</p>
-        </div>
-      )}
+<div style={{ color: 'blue', fontWeight: 'bold', marginTop: '1rem' }}>
+        <p>Number of readings: {totalReadings}</p>
+        {totalReadings > 0 && (
+          <>
+            <p>Average Systolic: {avgSystolic}</p>
+            <p>Average Diastolic: {avgDiastolic}</p>
+          </>
+        )}
+      </div>
 
-      {/* Chart Container */}
-      <div
-        style={{
-          position: 'relative',
-          height: '200px',
-          width: '100%',
-          marginTop: '1rem',
-        }}
-      >
+      <div style={{ position: 'relative', height: '200px', width: '400px' }}>
         <canvas ref={canvasRef} />
       </div>
 
-      {/* Reset Button */}
+      <div style={{ marginTop: '1rem' }}>
+        <button onClick={handleCopyReadings}>
+          Copy readings for patient notes
+        </button>
+      </div>
+
       <div style={{ marginTop: '1rem' }}>
         <button onClick={handleReset}>Reset</button>
       </div>
-      <FeedbackLink toolName="Blood Pressure Calculator" emailAddress="caroline@toolsforpharmacists.com" />
+
+      <FeedbackLink
+        toolName="Blood Pressure Calculator"
+        emailAddress="caroline@toolsforpharmacists.com"
+      />
     </div>
   );
 }
