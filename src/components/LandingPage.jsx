@@ -17,7 +17,7 @@ const tools = [
   { id: 'opioidConversion', name: 'Opioid Conversion Calculator', description: 'This tool converts opioid doses to morphine-equivalent doses and vice versa' },
   { id: 'tinzaparin', name: 'Tinzaparin Dosing Tool', description: 'Calculate Tinzaparin treament dose based on weight.' },
   { id: 'nonHdl', name: 'Non-HDL Cholesterol Calculator', description: 'For primary prevention, NICE recommends reducing non-HDL cholesterol by more than 40%. Use this tool to calculate the target level' },
-  { id: 'EyeDropDuration', name: 'Eye Drop Duration Calculator', description: 'DThis tool allows users to calculate how long a supply of eye drops will last by letting them choose between entering the volume per bottle or the number of drops per bottle.).' },
+  { id: 'EyeDropDuration', name: 'Eye Drop Duration Calculator', description: 'This tool allows a user to estimate how long a supply of eye drops will last.' },
   { id: 'usefulWebsites', name: 'Useful Websites', description: 'Access useful online resources.' },
 ];
 
