@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FeedbackLink from "./FeedbackLink.jsx";
+import DisclaimerReminder from "./DisclaimerReminder.jsx";
 
 function QuantitySyncCalculator() {
   // State for how many medicines and how many days
@@ -57,6 +58,8 @@ function QuantitySyncCalculator() {
   return (
     <div className="tool">
       <h2>Quantity Synchronisation Calculator</h2>
+      <DisclaimerReminder />
+      <p style={{ color: 'grey' }}>The ouptut will automatically be displayed in blue when all the required information has been provided. </p>
 
       <div style={{ marginBottom: '1rem' }}>
         <label style={{ marginRight: '1rem' }}>

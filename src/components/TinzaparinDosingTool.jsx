@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FeedbackLink from "./FeedbackLink.jsx";
+import DisclaimerReminder from "./DisclaimerReminder.jsx";
 
 function TinzaparinDosingTool() {
  // TODO: Implement Tinzaparin dosing tool logic here 
@@ -50,8 +51,8 @@ function TinzaparinDosingTool() {
  return (
    <div className="tool">
      <h2>Tinzaparin Treatment Dosing Tool</h2>
-     <p style={{color: 'red'}}>This calculator is only suitable for double checking doses and should NOT be used as the primary means for determining the correct dose.</p>
-
+     <p style={{ color: 'grey' }}>The ouptut will automatically be displayed in blue when all the required information has been provided. </p>
+     <DisclaimerReminder />
      {/* eGFR Category Radio Buttons */}
      <div style={{ marginBottom: '1rem' }}>
        <label style={{ marginRight: '1rem' }}>

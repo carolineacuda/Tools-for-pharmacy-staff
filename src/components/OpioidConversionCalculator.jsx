@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FeedbackLink from "./FeedbackLink.jsx";
+import DisclaimerReminder from "./DisclaimerReminder.jsx";
 
 /*
 Calculations based on tables below. Data from (https://bnf.nice.org.uk/medicines-guidance/prescribing-in-palliative-care/)		
@@ -154,8 +155,8 @@ const opioidData = [
     return (
       <div className="tool">
         <h2>Opioid Conversion Calculator</h2>
-        <p style={{color: 'red'}}>This calculator is intended solely as a reference for verifying opiate conversion estimates and
-          should not be relied upon as the primary method for determining the correct dose.</p>
+        <DisclaimerReminder />
+        <p style={{ color: 'grey' }}>The ouptut will automatically be displayed in blue when all the required information has been provided. </p>
   
         {/* PART A: Total Daily Morphine-Equivalent Dose */}
         <h3>Total Daily Morphine-Equivalent Dose</h3>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Chart } from 'chart.js/auto';
 import FeedbackLink from "./FeedbackLink.jsx";
+import DisclaimerReminder from "./DisclaimerReminder.jsx";
 
 function BloodPressureCalculator() {
   // Each element in 'readings' is an object { systolic: '', diastolic: '' }
@@ -121,6 +122,9 @@ function BloodPressureCalculator() {
   return (
     <div className="tool">
       <h2>Home Blood Pressure Average Calculator</h2>
+      <DisclaimerReminder />
+       
+      <p style={{ color: 'grey' }}> Enter the first blood pressure reading. The tool will automatically expand to allow you to enter the next reading. The average will be calculated dynamically. </p>
 
       {/* Dynamic input rows */}
       {readings.map((reading, index) => (
@@ -129,17 +133,20 @@ function BloodPressureCalculator() {
             Systolic:
             <input
               type="number"
+               placeholder="e.g. 120"
               value={reading.systolic}
               onChange={(e) =>
                 handleLineChange(index, 'systolic', e.target.value)
               }
-              style={{ width: '70px', marginLeft: '0.3rem' }}
+              style={{ width: '70px', marginLeft: '0.3rem' }
+            }
             />
           </label>
           <label>
             Diastolic:
             <input
               type="number"
+              placeholder="e.g. 80"
               value={reading.diastolic}
               onChange={(e) =>
                 handleLineChange(index, 'diastolic', e.target.value)

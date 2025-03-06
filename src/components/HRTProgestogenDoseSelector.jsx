@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FeedbackLink from "./FeedbackLink.jsx";
+import DisclaimerReminder from "./DisclaimerReminder.jsx";
 
 // Define the available HRT products with their dose options and associated oestrogen categories.
 const hrtOptions = {
@@ -127,6 +128,8 @@ if (selectedHRT && selectedDose) {
   return (
     <div className="tool">
       <h2>HRT Progestogen Dose Lookup Tool</h2>
+      <DisclaimerReminder />
+      <p style={{ color: 'grey' }}>The ouptut will automatically be displayed in blue when all the required information has been provided. </p>
       
       <div>
         <h3>Step 1: Select the Prescribed Oestrogen only HRT and Dose</h3>

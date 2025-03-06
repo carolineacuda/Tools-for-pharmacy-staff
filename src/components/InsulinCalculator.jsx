@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FeedbackLink from "./FeedbackLink.jsx";
+import DisclaimerReminder from "./DisclaimerReminder.jsx";
 
 /* ====================================================
    Insulin Duration Calculator Component
@@ -113,6 +114,8 @@ function InsulinCalculator() {
   return (
     <div className="tool">
       <h2>Insulin Duration Calculator</h2>
+      <DisclaimerReminder />
+      <p style={{ color: 'grey' }}>The ouptut will automatically be displayed in blue when all the required information has been provided. </p>
 
       {/* Radio buttons for the two modes */}
       <div style={{ marginBottom: '1rem' }}>

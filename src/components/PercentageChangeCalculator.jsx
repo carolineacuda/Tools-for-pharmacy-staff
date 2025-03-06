@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FeedbackLink from "./FeedbackLink.jsx";
+import DisclaimerReminder from "./DisclaimerReminder.jsx";
 
 function PercentageChangeCalculator() {
   const [previous, setPrevious] = useState('');
@@ -33,6 +34,8 @@ function PercentageChangeCalculator() {
   return (
     <div className="tool">
       <h2>Percentage Increase/Decrease Calculator</h2>
+      <DisclaimerReminder />
+      <p style={{ color: 'grey' }}>The ouptut will automatically be displayed in blue when all the required information has been provided. </p>
 
       {/* Inputs for previous/current values */}
       <div style={{ marginBottom: '1rem' }}>

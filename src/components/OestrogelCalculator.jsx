@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FeedbackLink from "./FeedbackLink.jsx";
+import DisclaimerReminder from "./DisclaimerReminder.jsx";
 
 function OestrogelCalculator() {
   // Two modes: "duration" (how many days) or "quantity" (how many devices)
@@ -87,6 +88,8 @@ function OestrogelCalculator() {
   return (
     <div className="tool">
       <h2>Oestrogel Duration Calculator</h2>
+      <DisclaimerReminder />
+      <p style={{ color: 'grey' }}>The ouptut will automatically be displayed in blue when all the required information has been provided. </p>
 
       {/* Radio buttons for the two modes */}
       <div style={{ marginBottom: '1rem' }}>

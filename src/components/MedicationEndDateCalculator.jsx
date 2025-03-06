@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FeedbackLink from "./FeedbackLink.jsx";
+import DisclaimerReminder from "./DisclaimerReminder.jsx";
 
 function MedicationEndDateCalculator() {
   // Formulation: "solid" or "liquid"
@@ -87,6 +88,8 @@ function MedicationEndDateCalculator() {
   return (
     <div className="tool">
       <h2>Medication End Date Calculator</h2>
+      <DisclaimerReminder />
+      <p style={{ color: 'grey' }}>The ouptut will automatically be displayed in blue when all the required information has been provided. </p>
 
       {/* Formulation selection */}
       <div style={{ marginBottom: '1rem' }}>

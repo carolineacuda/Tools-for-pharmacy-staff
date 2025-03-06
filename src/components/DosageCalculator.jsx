@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FeedbackLink from "./FeedbackLink.jsx";
+import DisclaimerReminder from "./DisclaimerReminder.jsx";
 
 function DosageCalculator() {
   // Calculation method: 'weight' (mg/kg * kg) or 'direct' (user enters total mg)
@@ -83,8 +84,8 @@ function DosageCalculator() {
   return (
     <div className="tool">
       <h2>Dosage Calculator</h2>
-      <p style={{color: 'red'}}>This calculator is only suitable for double checking doses and should NOT be used as the primary means for determining the correct dose.</p>
-
+      <DisclaimerReminder />
+      <p style={{ color: 'grey' }}>The ouptut will automatically be displayed in blue when all the required information has been provided. </p>
       {/* Calculation Method Selection */}
       <div style={{ marginBottom: '1rem' }}>
         <label style={{ marginRight: '1rem' }}>

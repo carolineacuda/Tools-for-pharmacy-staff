@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import DisclaimerReminder from "./DisclaimerReminder.jsx";
 
 function MetricImperialConversionCalculator() {
   // Toggle between Weight and Height modes.
@@ -109,6 +110,8 @@ function MetricImperialConversionCalculator() {
   return (
     <div className="tool">
       <h2>Metric Imperial Conversion Calculator</h2>
+      <DisclaimerReminder />
+      <p style={{ color: 'grey' }}>The ouptut will automatically be displayed in blue when all the required information has been provided. </p>
       {/* Toggle between Weight and Height */}
       <div style={{ marginBottom: '1rem' }}>
         <label style={{ marginRight: '1rem' }}>

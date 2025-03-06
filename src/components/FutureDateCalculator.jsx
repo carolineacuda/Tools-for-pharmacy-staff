@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import FeedbackLink from "./FeedbackLink.jsx";
+import DisclaimerReminder from "./DisclaimerReminder.jsx";
 
 /* ====================================================
    Future Date Calculator Component
@@ -52,7 +53,8 @@ function FutureDateCalculator() {
   return (
     <div className="tool">
       <h2>Future Date Calculator</h2>
-
+      <DisclaimerReminder />
+      <p style={{ color: 'grey' }}>The ouptut will automatically be displayed in blue when all the required information has been provided. </p>
       <div style={{ marginBottom: '1rem' }}>
         <label style={{ display: 'inline-block', width: '100px' }}>
           Start Date:

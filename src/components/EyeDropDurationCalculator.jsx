@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FeedbackLink from "./FeedbackLink.jsx";
+import DisclaimerReminder from "./DisclaimerReminder.jsx";
 
 function EyeDropDurationCalculator() {
   // State for general inputs.
@@ -87,7 +88,8 @@ function EyeDropDurationCalculator() {
   return (
     <div className="tool">
       <h2>Eye Drop Duration Calculator</h2>
-
+      <DisclaimerReminder />
+      <p style={{ color: 'grey' }}>The ouptut will automatically be displayed in blue when all the required information has been provided. </p>
       {/* Number of bottles */}
       <div style={{ marginBottom: "1rem" }}>
         <label style={{ display: "block", marginBottom: "0.5rem" }}>

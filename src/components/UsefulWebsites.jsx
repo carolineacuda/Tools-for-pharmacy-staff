@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import FeedbackLink from "./FeedbackLink.jsx";
+import DisclaimerReminder from "./DisclaimerReminder.jsx";
 
 /* ====================================================
    Useful Websites Component
@@ -145,6 +146,11 @@ function UsefulWebsites() {
       url: "https://www.mdcalc.com/steroid-conversion-calculator"
     },
     {
+      title: "Greater Manchester Adult Hypertension Medication Pathway",
+      description: "A concise pragmatic guide to the management of adult hypertension from GMMMG.",
+      url: "https://gmmmg.nhs.uk/wp-content/uploads/2023/09/GM-Hypertension-Pathway-V9.2-Final.pdf"
+    },
+    {
       title: "Complete IDDSI Framework ",
       description: "Dysphagia and drink thickness.",
       url: "https://www.iddsi.org/images/Publications-Resources/DetailedDefnTestMethods/English/V2DetailedDefnEnglish31july2019.pdf"
@@ -168,6 +174,7 @@ function UsefulWebsites() {
     return (
       <div className="tool">
         <h2>Useful Websites</h2>
+        <DisclaimerReminder />
         <div className="input-group">
           <label>
             Search:
