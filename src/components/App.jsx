@@ -69,9 +69,9 @@ function App() {
           <p>
             This application is NOT a medical device and is provided solely for general informational and educational purposes. 
             The tools, calculations, and information contained within are not intended to replace professional clinical judgement or individualised patient care. 
-            While we strive to maintain accuracy and keep content current, we offer no guarantee or warranty, express or implied, regarding the completeness, accuracy, 
-            reliability, or suitability of the information presented. Users must independently verify all information and calculations before relying upon them for clinical decision-making. The creator of this application and associated parties accept no responsibility or liability for any loss, harm, or damage arising from, or connected with,
-            the use or reliance on this application. Any reliance placed upon the information provided by this application is strictly at your own risk
+            While I strive to maintain accuracy and keep content current, I offer no guarantee or warranty, express or implied, regarding the completeness, accuracy, 
+            reliability, or suitability of the information presented. Users must independently verify all information and calculations before relying upon them for clinical decision-making. I accept no responsibility or liability for any loss, harm, or damage arising from, or connected with,
+            the use or reliance on this application. Any reliance placed upon the information provided by this application is strictly at your own risk.
           </p>
           <button onClick={handleAcceptDisclaimer} style={{ marginTop: '1rem', padding: '10px 20px' }}>
             ACCEPT & CONTINUE
@@ -103,8 +103,8 @@ function App() {
           {selectedTool === 'oestrogel' && <OestrogelCalculator />}
           {selectedTool === 'HRTProgestogen' && <HRTProgestogenDoseSelector />}
           {selectedTool === 'EyeDropDuration' && <EyeDropDurationCalculator />}
-          {selectedTool === 'usefulWebsites' && <UsefulWebsites />}
-        <footer > <strong style={{ color: 'red' }}>DISCLAIMER:</strong> This application is NOT a medical device and is provided solely for general informational and educational purposes. The tools, calculations, and information contained within are not intended to replace professional clinical judgement or individualised patient care. While we strive to maintain accuracy and keep content current, we offer no guarantee or warranty, express or implied, regarding the completeness, accuracy, reliability, or suitability of the information presented. Users must independently verify all information and calculations before relying upon them for clinical decision-making. The creator of this application and associated parties accept no responsibility or liability for any loss, harm, or damage arising from, or connected with, the use or reliance on this application. Any reliance placed upon the information provided by this application is strictly at your own risk
+          {selectedTool === 'usefulWebsites' && <UsefulWebsites />}. 
+        <footer > <strong style={{ color: 'red' }}>DISCLAIMER:</strong> This application is NOT a medical device and is provided solely for general informational and educational purposesThe tools, calculations, and information contained within are not intended to replace professional clinical judgement or individualised patient care. While I strive to maintain accuracy and keep content current, I offer no guarantee or warranty, express or implied, regarding the completeness, accuracy, reliability, or suitability of the information presented. Users must independently verify all information and calculations before relying upon them for clinical decision-making. I accept no responsibility or liability for any loss, harm, or damage arising from, or connected with, the use or reliance on this application. Any reliance placed upon the information provided by this application is strictly at your own risk. 
 </footer>
         
          {/* ... add your other tools */}
